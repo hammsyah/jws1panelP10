@@ -9,6 +9,7 @@ uint8_t tmpjws;
 uint8_t tmpinfo;
 
 struct ConfigJws {
+  uint8_t panel; // menit
   uint8_t iqmhs; // menit
   uint8_t iqmhd; // menit
   uint8_t iqmha; // menit
@@ -36,7 +37,7 @@ String message, XML;
 
 void membuatDataAwal() {
 
-  String dataawal = "{\"iqmhs\":\"12\",\"iqmhd\":\"8\",\"iqmha\":\"6\",\"iqmhm\":\"5\",\"iqmhi\":\"5\",\"durasiadzan\":\"4\",\"ihti\":\"2\",\"latitude\":\"-6.16\",\"longitude\":\"106.61\",\"zonawaktu\":\"7\",\"hilal\":\"0\",\"namamasjid\":\"UNTUK 1000 MASJID - ELEKTRONMART.COM - 2020\",\"informasi\":\"INFO 1 MASIH KOSONG\"}";
+  String dataawal = "{\"panel\":\"2\",\"iqmhs\":\"12\",\"iqmhd\":\"8\",\"iqmha\":\"6\",\"iqmhm\":\"5\",\"iqmhi\":\"5\",\"durasiadzan\":\"4\",\"ihti\":\"2\",\"latitude\":\"-6.16\",\"longitude\":\"106.61\",\"zonawaktu\":\"7\",\"hilal\":\"0\",\"namamasjid\":\"UNTUK 1000 MASJID - ELEKTRONMART.COM - 2020\",\"informasi\":\"INFO 1 MASIH KOSONG\"}";
 
   DynamicJsonDocument doc(1024);
   DeserializationError error = deserializeJson(doc, dataawal);
@@ -95,6 +96,7 @@ void loadJwsConfig(const char *fileconfigjws, ConfigJws &configjws) {
     return;
   }
   
+  configjws.panel = doc["panel"];
   configjws.iqmhs = doc["iqmhs"];
   configjws.iqmhd = doc["iqmhd"];
   configjws.iqmha = doc["iqmha"];
@@ -121,6 +123,7 @@ void bacaParameter() {
 
   Serial.println(" ");
   Serial.println("PARAMETER TERSIMPAN");
+  Serial.print("Jumlah Panel   : "); Serial.println(configjws.panel);
   Serial.print("Iqomah Subuh   : "); Serial.println(configjws.iqmhs);
   Serial.print("Iqomah Dzuhur  : "); Serial.println(configjws.iqmhd);
   Serial.print("Iqomah Ashar   : "); Serial.println(configjws.iqmha);
@@ -135,6 +138,8 @@ void bacaParameter() {
   Serial.print("Nama Masjid    : "); Serial.println(configjws.namamasjid);
   Serial.print("informasi      : "); Serial.println(configjws.informasi);
   Serial.println(" ");
+  lebarpanel = (int)configjws.panel ;
+  Serial.print("panel      : "); Serial.println(lebarpanel);
   
 }
 
@@ -278,7 +283,7 @@ void XMLWaktu(){
       }else{XML+=rDet;}
     XML+="</Detik>";
     XML+="<Suhu>";
-    XML+= celsius - 5;
+    XML+= celsius - 2;
     XML+="</Suhu>";
     
   XML+="</t>"; 
@@ -329,6 +334,15 @@ void XMLDataJWS(){
     XML+="<Informasi>";
     XML+= configjws.informasi;
     XML+="</Informasi>";
+
+    XML+="<Panel>";
+    XML+= configjws.panel;
+    XML+="</Panel>";
     
   XML+="</t>"; 
 }
+
+
+// u_int8_t lebarpanel = 2;
+// DMDESP Disp(lebarpanel, 1);  // Jumlah Panel P10 yang digunakan (KOLOM,BARIS)
+

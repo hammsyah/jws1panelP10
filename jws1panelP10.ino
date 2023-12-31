@@ -41,8 +41,11 @@ Tools :
 
 www.grobak.net - www.elektronmart.com
 
-Updated : 15 Mei 2020
+Updated : 30 Desember 2023
+update by HAMTRONIK
 */
+
+int lebarpanel;
 
 #include <FS.h>
 #include <LittleFS.h>
@@ -68,20 +71,24 @@ RtcDS3231<TwoWire> Rtc(Wire);
 
 
 #include <PrayerTimes.h>
-#include "Display.h"
+
 #include "Buzzer.h"
 #include "RTC.h"
 #include "FSConfig.h"
+
 #include "WebServer.h"
 #include "WebPage.h"
-#include "JWS.h"
 
+#include "Display.h"
 
 
 //----------------------------------------------------------------------
 // SETUP
 
+
+
 void setup() {
+
 
   Serial.begin(115200);
 
@@ -171,14 +178,19 @@ void setup() {
   bacaParameter();
 
   //DMD
+
+  // #include <sys/types.h>
+ 
+
   Disp.start();  
   Disp.setBrightness(2);
+// DMDESP Disp(lebarpanel, 1);
 
   UpdateWaktu();
   
 }
 
-
+#include "JWS.h"
 
 
 //----------------------------------------------------------------------

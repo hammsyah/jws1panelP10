@@ -20,7 +20,7 @@ char setwaktu[] PROGMEM = R"=====(
 <div class='info'>
   <span id='day'></span>/<span id='month'></span>/<span id='year'></span><span> </span>
   <span id='hour'></span>:<span id='minute'></span>:<span id='second'></span><span> </span>
-  <span id='temp'></span><span>C</span><br><br>
+  <span id='temp'></span><span>&degC</span><br><br>
 </div>
 
 <h2>Setting JWS</h2>
@@ -80,8 +80,11 @@ char setwaktu[] PROGMEM = R"=====(
   </tr>
   <tr>
     <td colspan="2">
-      <label for="hilal">Hilal</label><br>
-      <input id="hilal" placeholder="2" maxlength="2" size="3"/>
+      <label for="cars">Hilal:</label>
+      <select name="cars" id="hilal">
+        <option value="0" >0 Derajat</option>
+        <option value="2" >2 Derajat</option>
+      </select>
     </td>
   </tr>
 </table>
@@ -118,6 +121,14 @@ char setwaktu[] PROGMEM = R"=====(
   </div>
 </form>
 
+<br>
+<form>
+  <label for="cars">Jumlah panel:</label>
+  <select name="cars" id="panel">
+    <option value="1" >1</option>
+    <option value="2" >2</option>
+  </select>
+</form>
 <hr/>
 <br><br>
 
@@ -280,6 +291,10 @@ function handleServerResponseDataJWS(){
    xmldoc = xmlResponse.getElementsByTagName('Informasi');
    message = xmldoc[0].firstChild.nodeValue;
    document.getElementById('informasi').value=message;
+
+   xmldoc = xmlResponse.getElementsByTagName('Panel');
+   message = xmldoc[0].firstChild.nodeValue;
+   document.getElementById('panel').value=message;
  }
  
 }
@@ -288,6 +303,7 @@ function handleServerResponseDataJWS(){
 function setJws() {
   
   console.log("tombol telah ditekan!");
+  var panel = document.getElementById("panel").value;
   var iqmhs = document.getElementById("iqmhs").value;
   var iqmhd = document.getElementById("iqmhd").value;
   var iqmha = document.getElementById("iqmha").value;
@@ -302,7 +318,7 @@ function setJws() {
   var namamasjid = document.getElementById("namamasjid").value;
   var informasi = document.getElementById("informasi").value;
   
-  var datajws = {iqmhs:iqmhs, iqmhd:iqmhd, iqmha:iqmha, iqmhm:iqmhm, iqmhi:iqmhi, durasiadzan:durasiadzan, ihti:ihti, latitude:latitude, longitude:longitude, zonawaktu:zonawaktu, hilal:hilal, namamasjid:namamasjid, informasi:informasi};
+  var datajws = {panel:panel, iqmhs:iqmhs, iqmhd:iqmhd, iqmha:iqmha, iqmhm:iqmhm, iqmhi:iqmhi, durasiadzan:durasiadzan, ihti:ihti, latitude:latitude, longitude:longitude, zonawaktu:zonawaktu, hilal:hilal, namamasjid:namamasjid, informasi:informasi};
   
   var xhr = new XMLHttpRequest();
   var url = "/simpandatajws";
